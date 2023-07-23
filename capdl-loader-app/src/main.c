@@ -648,8 +648,14 @@ unsigned int create_object(CDL_Model *spec, CDL_Object *obj, CDL_ObjID id, seL4_
      */
 #ifdef CONFIG_ARM_SMMU
     if (CDL_Obj_Type(obj) == CDL_SID) {
-        err = seL4_ARM_SIDControl_GetSID(seL4_CapSMMUSIDControl, sid_number, seL4_CapInitThreadCNode, free_slot,
+        printf("|seL4_ARM_SIDControl_GetSID| called\n");
+        err = seL4_ARM_SIDControl_GetSID(seL4_CapSMMUSIDControl, 0x877, seL4_CapInitThreadCNode, free_slot,
                                          CONFIG_WORD_SIZE);
+
+        // err = seL4_ARM_SIDControl_GetSID(seL4_CapSMMUSIDControl, 1780, seL4_CapInitThreadCNode, free_slot,
+        //                                  CONFIG_WORD_SIZE);
+        printf("|seL4_ARM_SIDControl_GetSID| err = %d\n", err);
+        printf("|seL4_ARM_SIDControl_GetSID| free_slot = %d\n", free_slot);
         ZF_LOGF_IF(err != seL4_NoError, "Failed to allocate SID cap");
         sid_number++;
         ZF_LOGF_IF(sid_number > MAX_STREAM_IDS, "Stream ID numbers exhausted");
